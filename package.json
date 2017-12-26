@@ -1,12 +1,13 @@
 {
-  "name": "greeter-bot",
+  "name": "rp-event-bot",
   "version": "1.0.0",
-  "description": "My own Discord bot",
+  "description": "RP Event Bot for Discord",
   "main": "bot.js",
-  "author": "YOUR-NAME-HERE",
+  "author": "Vye",
   "dependencies": {
     "discord.io": "^2.5.3",
     "discord.js": "^11.2.1",
+    "discord.js-commando": "^0.9.0",
     "winston": "^2.4.0"
   },
   "devDependencies": {},

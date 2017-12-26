@@ -1,0 +1,15 @@
+{
+    "settings":
+    [
+        {
+            "type": "setting",
+            "label": "location",
+            "name": "Location1"
+        },
+        {
+            "type": "setting",
+            "label": "location",
+            "name": "Location2"
+        }
+    ]
+}

@@ -1,0 +1,15 @@
+{
+    "protagonists":
+    [
+        {
+            "type": "protagonist",
+            "label": "person",
+            "name": "Protagonist1"
+        },
+        {
+            "type": "protagonist",
+            "label": "group",
+            "name": "Protagonist2"
+        }
+    ]
+}

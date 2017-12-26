@@ -1,0 +1,15 @@
+{
+    "antagonists":
+    [
+        {
+            "type": "antagonist",
+            "label": "person",
+            "name": "Antagonist1"
+        },
+        {
+            "type": "antagonist",
+            "label": "person",
+            "name": "Antagonist2"
+        }
+    ]
+}
