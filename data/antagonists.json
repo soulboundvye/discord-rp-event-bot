@@ -4,12 +4,17 @@
         {
             "type": "antagonist",
             "label": "person",
-            "name": "Antagonist1"
+            "text": "the mysterious stranger"
         },
         {
             "type": "antagonist",
             "label": "person",
-            "name": "Antagonist2"
+            "text": "the Mad King"
+        },
+        {
+            "type": "antagonist",
+            "label": "group",
+            "text": "the Cult of Lazujois"
         }
     ]
 }

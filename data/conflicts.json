@@ -1,0 +1,28 @@
+{
+    "conflicts":[
+        {
+            "text":"duels",
+            "protagonistReq":"person",
+            "antagonistReq":"person",
+            "settingReq":"location",
+            "theme": "violence",
+            "question": "How did it come to this?"
+        },
+        {
+            "text":"arrests",
+            "protagonistReq":"group",
+            "antagonistReq":"person",
+            "settingReq":"location",
+            "theme": "power",
+            "question": "What are the charges?"
+        },
+        {
+            "text":"murders",
+            "protagonistReq":"person",
+            "antagonistReq":"person",
+            "settingReq":"location",
+            "theme": "violence",
+            "question": "Who witnessed it?"
+        }
+    ]
+}

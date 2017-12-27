@@ -4,12 +4,23 @@
         {
             "type": "setting",
             "label": "location",
-            "name": "Location1"
+            "article": "",
+            "text": "Berdef",
+            "descriptor": "the bustling Hrothi mining town of "
         },
         {
             "type": "setting",
             "label": "location",
-            "name": "Location2"
+            "article": "a",
+            "text": " cave",
+            "descriptor": " mysterious"
+        },
+        {
+            "type": "setting",
+            "label": "event",
+            "article": "a",
+            "text": "lunar eclipse",
+            "descriptor": "n ominous "
         }
     ]
 }

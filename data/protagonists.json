@@ -4,12 +4,22 @@
         {
             "type": "protagonist",
             "label": "person",
-            "name": "Protagonist1"
+            "text": "the town blacksmith"
+        },
+        {
+            "type": "protagonist",
+            "label": "person",
+            "text": "Keveth"
         },
         {
             "type": "protagonist",
             "label": "group",
-            "name": "Protagonist2"
+            "text": "the townsfolk"
+        },
+        {
+            "type": "protagonist",
+            "label": "group",
+            "text": "the local militia"
         }
     ]
 }
