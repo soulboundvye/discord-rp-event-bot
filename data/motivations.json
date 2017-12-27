@@ -1,0 +1,14 @@
+{
+"motivations": [
+        {
+            "type": "motivation",
+            "label": "violence",
+            "text": "a thirst for revenge"
+        },
+        {
+            "type": "motivation",
+            "label": "power",
+            "text": "a desire to prove dominance"
+        }
+    ]
+}

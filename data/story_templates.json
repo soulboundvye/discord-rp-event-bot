@@ -1,0 +1,40 @@
+{
+    "story_templates": [
+        {
+            "template":"Intro1",
+            "text": "In RICHSETTING1, PROTAGONIST1 CONFLICT1 ANTAGONIST1 because of MOTIVATION1.",
+            "protagonistCount": 1,
+            "antagonistCount": 1,
+            "settingCount": 1,
+            "motivationCount": 1,
+            "conflictCount": 1
+        },
+        {
+            "template":"Middle1",
+            "text": "PROTAGONIST1 has MOTIVATION1 so CONFLICT1 ANTAGONIST1 in SETTING1.",
+            "protagonistCount": 1,
+            "antagonistCount": 1,
+            "settingCount": 1,
+            "motivationCount": 1,
+            "conflictCount": 1
+        },
+        {
+            "template":"Intro2",
+            "text": "ANTAGONIST1 CONFLICT1 PROTAGONIST1 in RICHSETTING1 that PROTAGONIST2 CONFLICT2.",
+            "protagonistCount": 2,
+            "antagonistCount": 1,
+            "settingCount": 1,
+            "motivationCount": 1,
+            "conflictCount": 2
+        },
+        {
+            "template":"Conclusion1",
+            "text": "PROTAGONIST1 CONFLICT1 ANTAGONIST1 in RICHSETTING1.",
+            "protagonistCount": 1,
+            "antagonistCount": 1,
+            "settingCount": 1,
+            "motivationCount": 1,
+            "conflictCount": 1
+        }
+    ]
+}
