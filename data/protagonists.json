@@ -4,32 +4,38 @@
         {
             "type": "protagonist",
             "label": "person",
-            "text": "the town blacksmith"
+            "text": "the town blacksmith",
+            "verbConjugation": "s"
         },
         {
             "type": "protagonist",
             "label": "person",
-            "text": "Keveth"
+            "text": "Keveth",
+            "verbConjugation": "s"
         },
         {
             "type": "protagonist",
             "label": "group",
-            "text": "the townsfolk"
+            "text": "the townsfolk",
+            "verbConjugation": ""
         },
         {
             "type": "protagonist",
             "label": "group",
-            "text": "the local militia"
+            "text": "the local militia",
+            "verbConjugation": "s"
         },
         {
             "type": "protagonist",
             "label": "nature",
-            "text": "a river"
+            "text": "a river",
+            "verbConjugation": "s"
         },
         {
             "type": "protagonist",
             "label": "nature",
-            "text": "the moon"
+            "text": "the moon",
+            "verbConjugation": "s"
         }
     ]
 }

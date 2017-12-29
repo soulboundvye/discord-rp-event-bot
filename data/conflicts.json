@@ -2,7 +2,7 @@
     "conflicts":[
         {
             "text":"duel",
-            "descriptor": "",
+            "textAddon": "",
             "protagonistReq":["person","group"],
             "antagonistReq":["person","group"],
             "settingReq":["location","event"],
@@ -52,7 +52,7 @@
         },
         {
             "text":"give",
-            "textAddon": "money to",
+            "textAddon": " money to",
             "protagonistReq":["person","group"],
             "antagonistReq":["person","group"],
             "settingReq":["location","event"],

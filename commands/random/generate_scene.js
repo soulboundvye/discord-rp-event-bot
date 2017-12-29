@@ -24,7 +24,7 @@ storyTemplateArray = storyTemplateData.story_templates;
 
 // Returns the text to be used by the conflict so that it is stated in English, not variables
 function getConflictTemplateString(template,conflict,setting,protagonist,antagonist,motivation) {
-    var text = template.text;
+    // var text = template.text;
     console.log("Entered getConflictTemplateString function");
     /*templates can have the following objects:
     SETTING = the name of a location or event (ex. a cave)
@@ -33,60 +33,81 @@ function getConflictTemplateString(template,conflict,setting,protagonist,antagon
     ANTAGONIST = the name of a person, group, beast, or nature (ex. the king, a cult, a lion, a storm)
     MOTIVATION = the theme of the conflict (ex. violence, wealth, fellowship, power)
     CONFLICT = the parameters for a story with a theme, protagonist, antagonist, setting, and action
+
+    Currently, antagonists are required to come first. Need to rework so either can come first.
     */
-    if (text.indexOf("ANTAGONIST1") != -1) {
-        text = text.replace("ANTAGONIST1",antagonist[0].text);
+    var text = template.text;
+    var whoFirst;
+    if (text.indexOf("PROTAGONIST") < text.indexOf("ANTAGONIST")) {
+        whoFirst = "protagonist";
     }
-    console.log(text);
-    if (text.indexOf("ANTAGONIST2") != -1) {
-        text = text.replace("ANTAGONIST2",antagonist[1].text);
-    }
-
-    console.log(text);
-    if (text.indexOf("PROTAGONIST1") != -1) {
-        text = text.replace("PROTAGONIST1",protagonist[0].text);
-    }
-    console.log(text);
-    if (text.indexOf("PROTAGONIST2") != -1) {
-        text = text.replace("PROTAGONIST2",protagonist[1].text);
+    else {
+        whoFirst = "antagonist";
     }
 
-    console.log(text);
-    if (text.indexOf("RICHSETTING1") != -1) {
-        text = text.replace("RICHSETTING1",setting[0].article + setting[0].descriptor + setting[0].text);
-    }
-    console.log(text);
-    if (text.indexOf("RICHSETTING2") != -1) {
-        text = text.replace("RICHSETTING2",setting[1].article + setting[1].descriptor + setting[1].text);
+    text = template.text.split(" ");
+
+    var i;
+    for (i = 0; i < text.length; i++) {
+        switch (text[i]) {
+            default:
+                break;
+            case "CONFLICT1":
+                if (whoFirst == "protagonist") {
+                    text[i] = conflict[0].text + protagonist[0].verbConjugation + conflict[0].textAddon;
+                }
+                else {
+                    text[i] = conflict[0].text + antagonist[0].verbConjugation + conflict[0].textAddon;
+                }
+                break;
+            case "CONFLICT2":
+                if (whoFirst == "protagonist") {
+                    text[i] = conflict[0].text + protagonist[0].verbConjugation + conflict[0].textAddon;
+                }
+                else {
+                    text[i] = conflict[1].text + antagonist[1].verbConjugation + conflict[1].textAddon;
+                }
+                break;
+            case "PROTAGONIST1":
+                text[i] = protagonist[0].text;
+                break;
+            case "PROTAGONIST2":
+                text[i] = protagonist[1].text;
+                break;
+            case "ANTAGONIST1":
+                text[i] = antagonist[0].text;
+                break;
+            case "ANTAGONIST2":
+                text[i] = antagonist[1].text;
+                break;
+            case "RICHSETTING1":
+                text[i] = setting[0].article + setting[0].descriptor + setting[0].text;
+                break;
+            case "RICHSETTING2":
+                text[i] = setting[1].article + setting[1].descriptor + setting[1].text;
+                break;
+            case "SETTING1":
+                text[i] = setting[0].article + setting[0].text;
+                break;
+            case "SETTING2":
+                text[i] = setting[1].article + setting[1].text;
+                break;
+            case "MOTIVATION1":
+                text[i] = motivation[0].text;
+                break;
+            case "MOTIVATION2":
+                text[i] = motivation[1].text;
+                break;
+        }
+        console.log("current string is: " + text);
     }
 
-    console.log(text);
-    if (text.indexOf("SETTING1") != -1) {
-        text = text.replace("SETTING1",setting[0].article + setting[0].text);
-    }
-    console.log(text);
-    if (text.indexOf("SETTING2") != -1) {
-        text = text.replace("SETTING2",setting[1].article + setting[1].text);
-    }
+    console.log("Ready to join the string...");
+    text = text.join(" ");
+    console.log("current string is: " + text);
+    //Add a period
+    text = text.concat(".");
 
-    console.log(text);
-    if (text.indexOf("CONFLICT1") != -1) {
-        text = text.replace("CONFLICT1",conflict[0].text);
-    }
-    console.log(text);
-    if (text.indexOf("CONFLICT2") != -1) {
-        text = text.replace("CONFLICT2",conflict[1].text);
-    }
-    console.log(text);
-
-    if (text.indexOf("MOTIVATION1") != -1) {
-        text = text.replace("MOTIVATION1",motivation[0].text);
-    }
-    console.log(text);
-    if (text.indexOf("MOTIVATION2") != -1) {
-        text = text.replace("MOTIVATION2",motivation[1].text);
-    }
-    console.log(text);
 
     text = text.concat(" ", conflict[0].question);
     if (template.conflictCount == 2) {
@@ -105,7 +126,7 @@ function getRandomConflictRequirement(count,conflicts,type) {
 
     switch (type) {
         default:
-            object = "No conflict requirement found."
+            object = "No conflict requirement found.";
             break;
         case "antagonist":
             for (i = 0; i < count; i++) {
