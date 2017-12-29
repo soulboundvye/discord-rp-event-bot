@@ -7,8 +7,38 @@
         },
         {
             "type": "motivation",
+            "label": "violence",
+            "text": "the war"
+        },
+        {
+            "type": "motivation",
+            "label": "wealth",
+            "text": "a lucrative bounty reward"
+        },
+        {
+            "type": "motivation",
+            "label": "wealth",
+            "text": "a generous spirit"
+        },
+        {
+            "type": "motivation",
+            "label": "fellowship",
+            "text": "a sense honor and duty"
+        },
+        {
+            "type": "motivation",
+            "label": "fellowship",
+            "text": "true love"
+        },
+        {
+            "type": "motivation",
             "label": "power",
             "text": "a desire to prove dominance"
+        },
+        {
+            "type": "motivation",
+            "label": "power",
+            "text": "a dangerous secret"
         }
     ]
 }

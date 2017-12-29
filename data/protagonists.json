@@ -20,6 +20,16 @@
             "type": "protagonist",
             "label": "group",
             "text": "the local militia"
+        },
+        {
+            "type": "protagonist",
+            "label": "nature",
+            "text": "a river"
+        },
+        {
+            "type": "protagonist",
+            "label": "nature",
+            "text": "the moon"
         }
     ]
 }

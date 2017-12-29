@@ -4,23 +4,30 @@
         {
             "type": "setting",
             "label": "location",
-            "article": "",
+            "article": "in ",
             "text": "Berdef",
-            "descriptor": "the bustling Hrothi mining town of "
+            "descriptor": "the bustling mining town of "
         },
         {
             "type": "setting",
             "label": "location",
-            "article": "a",
+            "article": "in a",
             "text": " cave",
             "descriptor": " mysterious"
         },
         {
             "type": "setting",
             "label": "event",
-            "article": "a",
-            "text": "lunar eclipse",
-            "descriptor": "n ominous "
+            "article": "during a",
+            "text": " lunar eclipse",
+            "descriptor": "n ominous"
+        },
+        {
+            "type": "setting",
+            "label": "event",
+            "article": "during a",
+            "text": " wedding",
+            "descriptor": " royal"
         }
     ]
 }

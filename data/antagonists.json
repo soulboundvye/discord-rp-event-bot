@@ -4,17 +4,38 @@
         {
             "type": "antagonist",
             "label": "person",
-            "text": "the mysterious stranger"
+            "text": "the mysterious stranger",
+            "verbConjugation": "s"
         },
         {
             "type": "antagonist",
             "label": "person",
-            "text": "the Mad King"
+            "text": "the Mad King",
+            "verbConjugation": "s"
         },
         {
             "type": "antagonist",
             "label": "group",
-            "text": "the Cult of Lazujois"
-        }
+            "text": "the Cult of Lazujois",
+            "verbConjugation": "s"
+        },
+        {
+            "type": "antagonist",
+            "label": "group",
+            "text": "bandits",
+            "verbConjugation": ""
+        },
+        {
+            "type": "antagonist",
+            "label": "beast",
+            "text": "a rabid bear",
+            "verbConjugation": "s"
+        },
+        {
+            "type": "antagonist",
+            "label": "beast",
+            "text": "the hound of Hell",
+            "verbConjugation": "s"
+        }        
     ]
 }

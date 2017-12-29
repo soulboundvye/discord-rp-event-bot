@@ -1,28 +1,64 @@
 {
     "conflicts":[
         {
-            "text":"duels",
-            "protagonistReq":"person",
-            "antagonistReq":"person",
-            "settingReq":"location",
-            "theme": "violence",
+            "text":"duel",
+            "descriptor": "",
+            "protagonistReq":["person","group"],
+            "antagonistReq":["person","group"],
+            "settingReq":["location","event"],
+            "theme": ["violence"],
+            "outcome": "against",
             "question": "How did it come to this?"
         },
         {
-            "text":"arrests",
-            "protagonistReq":"group",
-            "antagonistReq":"person",
-            "settingReq":"location",
-            "theme": "power",
+            "text":"arrest",
+            "textAddon": "",
+            "protagonistReq":["group","person"],
+            "antagonistReq":["person","group"],
+            "settingReq":["location","event"],
+            "theme": ["power"],
+            "outcome":"against",
             "question": "What are the charges?"
         },
         {
-            "text":"murders",
-            "protagonistReq":"person",
-            "antagonistReq":"person",
-            "settingReq":"location",
-            "theme": "violence",
+            "text":"murder",
+            "textAddon": "",
+            "protagonistReq":["person","group"],
+            "antagonistReq":["person"],
+            "settingReq":["location","event"],
+            "theme": ["violence"],
+            "outcome":"against",
             "question": "Who witnessed it?"
+        },
+        {
+            "text":"covet",
+            "textAddon": "",
+            "protagonistReq":["person","group","nature"],
+            "antagonistReq":["person","group"],
+            "settingReq":["location","event"],
+            "theme": ["wealth"],
+            "outcome":"against",
+            "question": "Have you ever heard of such a thing?"
+        },
+        {
+            "text":"befriend",
+            "textAddon": "",
+            "protagonistReq":["person","group"],
+            "antagonistReq":["person","group","beast"],
+            "settingReq":["location","event"],
+            "theme": ["fellowship"],
+            "outcome":"for",
+            "question": "Do we need to be worried?"
+        },
+        {
+            "text":"give",
+            "textAddon": "money to",
+            "protagonistReq":["person","group"],
+            "antagonistReq":["person","group"],
+            "settingReq":["location","event"],
+            "theme": ["fellowship"],
+            "outcome":"for",
+            "question": "How do you think that will impact the local economy?"
         }
     ]
 }
