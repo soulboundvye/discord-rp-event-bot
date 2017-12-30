@@ -6,25 +6,29 @@ const protagonistsData = require('../../data/protagonists.json');
 const conflictsData = require('../../data/conflicts.json');
 const motivationsData = require('../../data/motivations.json');
 
-//Load the set of story objects that have a type that can be filtered from
-var settingArray = [];
-settingArray = settingsData.settings;
 var protagonistArray = [];
-protagonistArray = protagonistsData.protagonists;
 var antagonistArray = [];
-antagonistArray = antagonistsData.antagonists;
+var settingArray = [];
 var motivationArray = [];
-motivationArray = motivationsData.motivations;
-//Load the set of conflicts that require specific protagonists, antagonists, settings, and motivations
 var conflictArray = [];
-conflictArray = conflictsData.conflicts;
-//Load the set of story templates to shove everything into
 var storyTemplateArray = [];
+
+//Load the set of story objects from JSON that have a type that can be filtered from
+protagonistArray = protagonistsData.protagonists;
+antagonistArray = antagonistsData.antagonists;
+settingArray = settingsData.settings;
+motivationArray = motivationsData.motivations;
+//Load the set of conflicts from JSON that require specific protagonists, antagonists, settings, and motivations
+conflictArray = conflictsData.conflicts;
+//Load the set of story templates from JSON to shove everything into
 storyTemplateArray = storyTemplateData.story_templates;
+
+var scenarioOfTheWeek;
+var test;
+test = "this is from generate_scene.js";
 
 // Returns the text to be used by the conflict so that it is stated in English, not variables
 function getConflictTemplateString(template,conflict,setting,protagonist,antagonist,motivation) {
-    // var text = template.text;
     console.log("Entered getConflictTemplateString function");
     /*templates can have the following objects:
     SETTING = the name of a location or event (ex. a cave)
@@ -33,8 +37,6 @@ function getConflictTemplateString(template,conflict,setting,protagonist,antagon
     ANTAGONIST = the name of a person, group, beast, or nature (ex. the king, a cult, a lion, a storm)
     MOTIVATION = the theme of the conflict (ex. violence, wealth, fellowship, power)
     CONFLICT = the parameters for a story with a theme, protagonist, antagonist, setting, and action
-
-    Currently, antagonists are required to come first. Need to rework so either can come first.
     */
     var text = template.text;
     var whoFirst;
@@ -108,13 +110,11 @@ function getConflictTemplateString(template,conflict,setting,protagonist,antagon
     //Add a period
     text = text.concat(".");
 
-
     text = text.concat(" ", conflict[0].question);
     if (template.conflictCount == 2) {
         text = text.concat(" ", conflict[1].question);
     }
-    
-
+    console.log(`Final text is: ${text}`);
     return text;
 }
 
@@ -233,17 +233,9 @@ function getRandomStoryObject(type,label) {
 }
 
 //For a given template, get all the necessary story objects
-function getAllObjectsForStoryTemplate(template,conflicts,protagonists,antagonists,settings,motivations) {
+function getAllObjects(count,conflicts,protagonists,antagonists,settings,motivations) {
    
-    // console.log("Entered getAllObjectsForStoryTemplate function");
-    //randomize whether the conflict is for or against the protagonist
-    var conflictType = Math.ceil(Math.random() * 2);
-    if (conflictType == 1) {
-        conflictType = "against";
-    }
-    else {
-        conflictType = "for";
-    }
+    // console.log("Entered getAllObjects function");
 
     //select which labels will be used for the conflict, if there are choices
     var chosenProtagonists = [];
@@ -253,8 +245,16 @@ function getAllObjectsForStoryTemplate(template,conflicts,protagonists,antagonis
 
     //for each conflict, go get the necessary stuffs
     var i = 0;
-    console.log("There are " + template.conflictCount + " conflicts to generate and get objects for");        
-    for (i = 0; i < template.conflictCount; i++) {
+    for (i = 0; i < count; i++) {
+        //randomize whether the conflict is for or against the protagonist
+        var conflictType = Math.ceil(Math.random() * 2);
+        if (conflictType == 1) {
+            conflictType = "against";
+        }
+        else {
+            conflictType = "for";
+        }
+
         getUniqueStoryObjects(i,conflicts,"conflict",conflictType);
         console.log("Conflict " + (i+1) + " is: " + conflicts[i].text);
 
@@ -279,40 +279,7 @@ function getAllObjectsForStoryTemplate(template,conflicts,protagonists,antagonis
 
     }
     
-    //Secondary conflicts are overwriting the required elements from the first conflict...
-    //Need to change workflow to generate conflict and required elements one at a time. 
-    //Is it okay if they are not unique? Probably not, unless I change the templates. 
-
-    // console.log("Now setting the initial story objects from the chosen labels");
-    // //get the initial set of story objects
-    // console.log("Getting random protagonist with label " + chosenProtagonists[0]);
-    // protagonists[0] = getRandomStoryObject("protagonist",chosenProtagonists[0]);
-    // console.log("Got the protagonist for conflict 1");
-    // console.log("Getting random antagonist with label " + chosenAntagonists[0]);
-    // antagonists[0] = getRandomStoryObject("antagonist",chosenAntagonists[0]);
-    // console.log("Got the antagonists for conflict 1");
-    // console.log("Getting random setting with label " + chosenSettings[0]);
-    // settings[0] = getRandomStoryObject("setting",chosenSettings[0]);
-    // console.log("Got the settings for conflict 1");
-    // console.log("Getting random motivation with label " + chosenMotivations[0]);
-    // motivations[0] = getRandomStoryObject("motivation",chosenMotivations[0]);
-    // console.log("Got the motivations for conflict 1");
-    // console.log("Got all the initial story objects for conflict 1");
-
-    //if there's more than 1 conflict in the story, get the remaining elements and make sure they're unique
-    // var i = 1;
-    // for (i = 1; i < template.conflictCount; i++) {
-    //     console.log("There is more than 1 conflict, so getting additional story objects");
-    //     getUniqueStoryObjects(template.conflictCount,protagonists,"protagonist",chosenProtagonists[i]);
-    //     console.log("got another unique protagonist for conflict " + (i+1));
-    //     getUniqueStoryObjects(template.conflictCount,antagonists,"antagonist",chosenAntagonists[i]);
-    //     console.log("got another unique antagonist for conflict " + (i+1));
-    //     getUniqueStoryObjects(template.conflictCount,settings,"setting",chosenSettings[i]);
-    //     console.log("got another unique setting for conflict " + (i+1));
-    //     getUniqueStoryObjects(template.conflictCount,motivations,"motivation",chosenMotivations[i]);
-    //     console.log("got another unique motivation for conflict " + (i+1));
-    // }
-    console.log("Exiting getAllObjectsForStoryTemplate function");
+    // console.log("Exiting getAllObjectsForStoryTemplate function");
     return null;
 }
 
@@ -329,18 +296,6 @@ function getUniqueStoryObjects(index,object,type,label) {
         while (object[index].text == object[index - 1].text)
     }
  
-    // var i = 0;
-    // for (i = 0; i < count; i++) {
-        // object[i] = getRandomStoryObject(type,label);
-        // console.log("Entered for loop to set object to " + object[i].text);
-        // if (i > 0) {
-        //     console.log("Entered if i > 0 statement. This shouldn't happen anymore.");
-        //     if (object[i] == object[i-1]) {
-        //         // console.log("Objects matched, retrying...");
-        //         i--;
-        //     }
-        // }
-    // }
     // console.log("Got " + object.length + " unique story objects of type " + type);
 }
 
@@ -357,28 +312,55 @@ class GenerateScenarioCommand extends commando.Command {
 
 
     async run(message, args) {
-        // randomly select a conflict and then use its requirements to generate the remaining parts
-        var selectedStoryTemplate = storyTemplateArray[Math.floor(Math.random() * storyTemplateArray.length)];
+        args = (args > 1) ? args : 1;
+        // randomly select one or more story template 
+        var i;
+        var selectedStoryTemplate = [];
+        for (i = 0; i < args; i++) {
+            selectedStoryTemplate[i] = storyTemplateArray[Math.floor(Math.random() * storyTemplateArray.length)];
+        }
+        //and then use its requirements to generate the remaining parts
+        //really should just get 2 of everything...
         var selectedConflict = [];
         var selectedProtagonist = [];
         var selectedAntagonist = [];
         var selectedSetting = [];
         var selectedMotivation = [];
 
-        console.log("going to get all objects for template " + selectedStoryTemplate.template);
-        getAllObjectsForStoryTemplate (
-            selectedStoryTemplate,
-            selectedConflict,
-            selectedProtagonist,
-            selectedAntagonist,
-            selectedSetting,
-            selectedMotivation
-        );
+        console.log("going to get all objects for the week's stories");
+        try {
+            await getAllObjects (
+                2, /*generating 2 of each for now*/
+                selectedConflict,
+                selectedProtagonist,
+                selectedAntagonist,
+                selectedSetting,
+                selectedMotivation
+            );
+        } catch (e) {
+            console.log(e.stack);
+        }
+        //add all that data to a place to keep and reference for the week
+        // scenarioOfTheWeek = {
+        //     scenarioTemplate: selectedStoryTemplate,
+        //     scenarioConflict: selectedConflict,
+        //     scenarioProtagonist: selectedProtagonist,
+        //     scenarioAntagonist: selectedAntagonist,
+        //     scenarioSetting: selectedSetting,
+        //     scenarioMotivation: selectedMotivation            
+        // };
 
         // Get the string that will be used to describe the scene and replace all the relevant objects
-        var sceneText = getConflictTemplateString(selectedStoryTemplate,selectedConflict,selectedSetting,selectedProtagonist,selectedAntagonist,selectedMotivation);
-        sceneText = sceneText.charAt(0).toUpperCase() + sceneText.slice(1);
-        message.channel.send(sceneText);
+        var sceneText = [];
+        for (i = 0; i < args; i++) {
+            try {
+                sceneText[i] = await getConflictTemplateString(selectedStoryTemplate[i],selectedConflict,selectedSetting,selectedProtagonist,selectedAntagonist,selectedMotivation);
+                console.log(`Got this back: ${sceneText}`);
+                sceneText[i] = sceneText[i].charAt(0).toUpperCase() + sceneText[i].slice(1);
+                message.channel.send(sceneText[i]);
+            } catch (e) {
+                console.log(e.stack);
+            }            }
     }
 
 
