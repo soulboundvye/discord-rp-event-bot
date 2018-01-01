@@ -299,6 +299,28 @@ function getUniqueStoryObjects(index,object,type,label) {
     // console.log("Got " + object.length + " unique story objects of type " + type);
 }
 
+function getConflict(protagonist,antagonist,setting) {
+    //the arguments passed in are from an array at a specified index
+    //need to find a conflict that meet the requirements (eventually should be unique)
+    //this function will be called for each scene and each set of actors, so only need to return 1 conflict
+    var matchingConflict;
+    try {
+        //start with a random conflict that matches the setting
+        do {
+            matchingConflict = conflictArray[Math.floor(Math.random() * conflictArray.length)];
+        }
+        while (matchingConflict.settingReq != setting.label)
+        //then check if it satisfies the protagonist and antagonist requirements
+        
+        //if so, select it
+        //if not, start over
+    } catch (e) {
+        console.log(e);
+    }
+
+    return matchingConflict;
+}
+
 
 class GenerateScenarioCommand extends commando.Command {
     constructor (client) {
@@ -319,13 +341,33 @@ class GenerateScenarioCommand extends commando.Command {
         for (i = 0; i < args; i++) {
             selectedStoryTemplate[i] = storyTemplateArray[Math.floor(Math.random() * storyTemplateArray.length)];
         }
-        //and then use its requirements to generate the remaining parts
-        //really should just get 2 of everything...
-        var selectedConflict = [];
+        //randomly select a couple protagonists and antagonists (there should only be 2 of each per week)
+        //randomly get some settings (a couple per week)
         var selectedProtagonist = [];
         var selectedAntagonist = [];
         var selectedSetting = [];
+        for (i = 0; i < 2; i++) {
+            try {
+                selectedProtagonist[i] = await protagonistArray[Math.floor(Math.random() * protagonistArray.length)];
+                selectedAntagonist[i] = await antagonistArray[Math.floor(Math.random() * antagonistArray.length)];
+                selectedSetting[i] = await settingArray[Math.floor(Math.random() * settingArray.length)];
+            } catch (e) {
+                console.log(e);
+            }
+        }
+
+        //use their types to select some conflicts they work in (there should be a new one for each story template)
+        //and motivations too (a couple per story template)
+
+        var selectedConflict = [];
         var selectedMotivation = [];
+        for (i = 0; i < args; i++) {
+            try {
+                selectedConflict[i] = getConflict(selectedProtagonist,selectedAntagonist,selectedSetting);
+            } catch (e) {
+                console.log(e);
+            }
+        }
 
         console.log("going to get all objects for the week's stories");
         try {
@@ -340,15 +382,6 @@ class GenerateScenarioCommand extends commando.Command {
         } catch (e) {
             console.log(e.stack);
         }
-        //add all that data to a place to keep and reference for the week
-        // scenarioOfTheWeek = {
-        //     scenarioTemplate: selectedStoryTemplate,
-        //     scenarioConflict: selectedConflict,
-        //     scenarioProtagonist: selectedProtagonist,
-        //     scenarioAntagonist: selectedAntagonist,
-        //     scenarioSetting: selectedSetting,
-        //     scenarioMotivation: selectedMotivation            
-        // };
 
         // Get the string that will be used to describe the scene and replace all the relevant objects
         var sceneText = [];
@@ -360,7 +393,8 @@ class GenerateScenarioCommand extends commando.Command {
                 message.channel.send(sceneText[i]);
             } catch (e) {
                 console.log(e.stack);
-            }            }
+            }            
+        }
     }
 
 
