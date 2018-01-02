@@ -39,12 +39,18 @@ function getConflictTemplateString(template,conflict,setting,protagonist,antagon
     CONFLICT = the parameters for a story with a theme, protagonist, antagonist, setting, and action
     */
     var text = template.text;
-    var whoFirst;
-    if (text.indexOf("PROTAGONIST") < text.indexOf("ANTAGONIST")) {
-        whoFirst = "protagonist";
+    var conflict1Lead, conflict2Lead;
+    if (text.indexOf("PROTAGONIST1") < text.indexOf("ANTAGONIST1")) {
+        conflict1Lead = "protagonist1";
     }
     else {
-        whoFirst = "antagonist";
+        conflict1Lead = "antagonist1";
+    }
+    if (text.indexOf("PROTAGONIST2") < text.indexOf("ANTAGONIST2")) {
+        conflict2Lead = "protagonist2";
+    }
+    else {
+        conflict2Lead = "antagonist2";
     }
 
     text = template.text.split(" ");
@@ -55,7 +61,7 @@ function getConflictTemplateString(template,conflict,setting,protagonist,antagon
             default:
                 break;
             case "CONFLICT1":
-                if (whoFirst == "protagonist") {
+                if (conflict1Lead == "protagonist") {
                     text[i] = conflict[0].text + protagonist[0].verbConjugation + conflict[0].textAddon;
                 }
                 else {
@@ -63,8 +69,8 @@ function getConflictTemplateString(template,conflict,setting,protagonist,antagon
                 }
                 break;
             case "CONFLICT2":
-                if (whoFirst == "protagonist") {
-                    text[i] = conflict[0].text + protagonist[0].verbConjugation + conflict[0].textAddon;
+                if (conflict2Lead == "protagonist") {
+                    text[i] = conflict[1].text + protagonist[1].verbConjugation + conflict[1].textAddon;
                 }
                 else {
                     text[i] = conflict[1].text + antagonist[1].verbConjugation + conflict[1].textAddon;
@@ -101,10 +107,10 @@ function getConflictTemplateString(template,conflict,setting,protagonist,antagon
                 text[i] = motivation[1].text;
                 break;
         }
-        console.log("current string is: " + text);
+        // console.log("current string is: " + text);
     }
 
-    console.log("Ready to join the string...");
+    // console.log("Ready to join the string...");
     text = text.join(" ");
     console.log("current string is: " + text);
     //Add a period
@@ -173,14 +179,14 @@ function getRandomConflictRequirement(count,conflicts,type) {
         case "motivation":
             for (i = 0; i < count; i++) {
                 // console.log("in the for loop to randomly choose a motivation from conflict " + i + "'s options");
-                if(conflicts.theme.length > 1) {
-                    // console.log("there is more than one option, so we're randomly selecting it");
-                    object[i] = conflicts.theme[Math.floor(Math.random() * conflicts.theme.length)];
-                }
-                else {
-                    // console.log("there is not more than one option, so just setting the value to " + conflicts[i].theme[0]);
-                    object[i] = conflicts.theme[0];                    
-                }
+                // if(conflicts.label.length > 1) {
+                //     // console.log("there is more than one option, so we're randomly selecting it");
+                //     object[i] = conflicts.label[Math.floor(Math.random() * conflicts.label.length)];
+                // }
+                // else {
+                    // console.log("there is not more than one option, so just setting the value to " + conflicts[i].label[0]);
+                    object[i] = conflicts.label;
+                // }
                 // console.log("the motivation chosen is " + object[i]);
             }
             break;
@@ -299,28 +305,63 @@ function getUniqueStoryObjects(index,object,type,label) {
     // console.log("Got " + object.length + " unique story objects of type " + type);
 }
 
-function getConflict(protagonist,antagonist,setting) {
-    //the arguments passed in are from an array at a specified index
+function getConflicts(protagonists,antagonists,settings) {
+    //the arguments passed in are from an array 
     //need to find a conflict that meet the requirements (eventually should be unique)
-    //this function will be called for each scene and each set of actors, so only need to return 1 conflict
-    var matchingConflict;
+    //this function will be called for each scene which could have 2 conflicts, so must return 2 conflicts
+    var matchingConflicts = [], filteredConflicts = [], requirements;
     try {
-        //start with a random conflict that matches the setting
-        do {
-            matchingConflict = conflictArray[Math.floor(Math.random() * conflictArray.length)];
+        for (var i = 0; i < 2; i++) {
+            console.log(`Looking for ${protagonists[i].label} protagonist, ${antagonists[i].label} antagonist, and ${settings[i].label} setting`);
+            requirements = {protagonist: protagonists[i].label, antagonist: antagonists[i].label, setting: settings[i].label};
+            filteredConflicts = conflictArray.filter(hasRequiredActors,requirements);
+            console.log(`Number of filtered conflicts: ${filteredConflicts.length}`);
+            matchingConflicts[i] = filteredConflicts[Math.floor(Math.random() * filteredConflicts.length)];
+            console.log(`Matching conflicts: ${matchingConflicts[i].text}`);
         }
-        while (matchingConflict.settingReq != setting.label)
-        //then check if it satisfies the protagonist and antagonist requirements
-        
-        //if so, select it
-        //if not, start over
     } catch (e) {
         console.log(e);
     }
 
-    return matchingConflict;
+    return matchingConflicts;
 }
 
+//for use with filter function for conflicts
+function hasRequiredActors(conflict) {
+    // console.log(`Looking for a matching conflict for ${this.protagonist}, ${this.antagonist}, ${this.setting}`);
+    // console.log(`Against conflict ${conflict.text} with requirements ${conflict.protagonistReq}, ${conflict.antagonistReq}, ${conflict.settingReq}`);
+    var result = conflict.protagonistReq.some(hasLabel,this.protagonist) &&
+        conflict.antagonistReq.some(hasLabel,this.antagonist) &&
+        conflict.settingReq.some(hasLabel,this.setting);
+    console.log(`Conflict ${conflict.text} has matching actors: ${result}`);
+    return result;
+
+}
+
+//for use with filter function for motivations
+function hasRequiredTheme(motivation) {
+    console.log(`Checking if ${motivation.text} contains ${this} theme`);
+    var result = motivation.label.some(hasLabel,this);
+    console.log(result);
+    return result;
+}
+
+//for use with filter function
+function hasLabel(labelToCheck) {
+    console.log(`Checking label ${labelToCheck} against ${this}`);
+    return labelToCheck == this;
+}
+
+//for use with filter function
+function hasLabelInArray(arrayToCheck) {
+    var i = 0;
+    console.log(`Checking in ${arrayToCheck.text} for ${this.label}`);
+    // for (i = 0; i < arrayToCheck.length; i++) {
+        if (this.label == arrayToCheck.label) return true;
+    // }
+    console.log(`Didn't find ${this.label}`);
+    return false;
+}
 
 class GenerateScenarioCommand extends commando.Command {
     constructor (client) {
@@ -331,7 +372,6 @@ class GenerateScenarioCommand extends commando.Command {
            description: 'Randomly generates a scenario'
         });
     }
-
 
     async run(message, args) {
         args = (args > 1) ? args : 1;
@@ -348,47 +388,53 @@ class GenerateScenarioCommand extends commando.Command {
         var selectedSetting = [];
         for (i = 0; i < 2; i++) {
             try {
-                selectedProtagonist[i] = await protagonistArray[Math.floor(Math.random() * protagonistArray.length)];
-                selectedAntagonist[i] = await antagonistArray[Math.floor(Math.random() * antagonistArray.length)];
-                selectedSetting[i] = await settingArray[Math.floor(Math.random() * settingArray.length)];
+                selectedProtagonist[i] = protagonistArray[Math.floor(Math.random() * protagonistArray.length)];
+                selectedAntagonist[i] = antagonistArray[Math.floor(Math.random() * antagonistArray.length)];
+                selectedSetting[i] = settingArray[Math.floor(Math.random() * settingArray.length)];
             } catch (e) {
                 console.log(e);
             }
         }
-
+        console.log("Got the actors. Now on to the conflict and motivation.");
         //use their types to select some conflicts they work in (there should be a new one for each story template)
         //and motivations too (a couple per story template)
 
-        var selectedConflict = [];
-        var selectedMotivation = [];
+        var selectedConflicts = [];
+        var selectedMotivation = [], filteredMotivations = [];
         for (i = 0; i < args; i++) {
             try {
-                selectedConflict[i] = getConflict(selectedProtagonist,selectedAntagonist,selectedSetting);
-            } catch (e) {
-                console.log(e);
+                selectedConflicts[i] = getConflicts(selectedProtagonist,selectedAntagonist,selectedSetting);
+                console.log(`Got 2 random conflicts with labels: ${selectedConflicts[i][0].label}, ${selectedConflicts[i][1].label}`);
+                for (var j = 0; j < selectedConflicts.length; j++) {
+                    filteredMotivations = motivationArray.filter(hasRequiredTheme,selectedConflicts[i][j].label);
+                    console.log(`Number of filtered motivations: ${filteredMotivations.length}`);
+                    selectedMotivation[j] = filteredMotivations[Math.floor(Math.random() * filteredMotivations.length)];
+                    console.log(`Got a random motivation with label: ${selectedMotivation[j].label}`);
+                }
+                } catch (e) {
+                    console.log(e);
             }
         }
 
-        console.log("going to get all objects for the week's stories");
-        try {
-            await getAllObjects (
-                2, /*generating 2 of each for now*/
-                selectedConflict,
-                selectedProtagonist,
-                selectedAntagonist,
-                selectedSetting,
-                selectedMotivation
-            );
-        } catch (e) {
-            console.log(e.stack);
-        }
+        // console.log("going to get all objects for the week's stories");
+        // try {
+        //     await getAllObjects (
+        //         2, /*generating 2 of each for now*/
+        //         selectedConflict,
+        //         selectedProtagonist,
+        //         selectedAntagonist,
+        //         selectedSetting,
+        //         selectedMotivation
+        //     );
+        // } catch (e) {
+        //     console.log(e.stack);
+        // }
 
         // Get the string that will be used to describe the scene and replace all the relevant objects
         var sceneText = [];
         for (i = 0; i < args; i++) {
             try {
-                sceneText[i] = await getConflictTemplateString(selectedStoryTemplate[i],selectedConflict,selectedSetting,selectedProtagonist,selectedAntagonist,selectedMotivation);
-                console.log(`Got this back: ${sceneText}`);
+                sceneText[i] = getConflictTemplateString(selectedStoryTemplate[i],selectedConflicts[i],selectedSetting,selectedProtagonist,selectedAntagonist,selectedMotivation);
                 sceneText[i] = sceneText[i].charAt(0).toUpperCase() + sceneText[i].slice(1);
                 message.channel.send(sceneText[i]);
             } catch (e) {

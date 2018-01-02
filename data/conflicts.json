@@ -6,7 +6,7 @@
             "protagonistReq":["person","group"],
             "antagonistReq":["person","group"],
             "settingReq":["location","event"],
-            "theme": ["violence"],
+            "label": "violence",
             "outcome": "against",
             "question": "How did it come to this?"
         },
@@ -16,7 +16,7 @@
             "protagonistReq":["group","person"],
             "antagonistReq":["person","group"],
             "settingReq":["location","event"],
-            "theme": ["power"],
+            "label": "power",
             "outcome":"against",
             "question": "What are the charges?"
         },
@@ -26,7 +26,7 @@
             "protagonistReq":["person","group"],
             "antagonistReq":["person"],
             "settingReq":["location","event"],
-            "theme": ["violence"],
+            "label": "violence",
             "outcome":"against",
             "question": "Who witnessed it?"
         },
@@ -36,9 +36,19 @@
             "protagonistReq":["person","group","nature"],
             "antagonistReq":["person","group"],
             "settingReq":["location","event"],
-            "theme": ["wealth"],
+            "label": "wealth",
             "outcome":"against",
             "question": "Have you ever heard of such a thing?"
+        },
+        {
+            "text":"appear",
+            "textAddon": " before",
+            "protagonistReq":["person","group","nature"],
+            "antagonistReq":["person","group","beast"],
+            "settingReq":["location","event"],
+            "label": "fellowship",
+            "outcome":"for",
+            "question": "Do you think this bodes ill?"
         },
         {
             "text":"befriend",
@@ -46,7 +56,7 @@
             "protagonistReq":["person","group"],
             "antagonistReq":["person","group","beast"],
             "settingReq":["location","event"],
-            "theme": ["fellowship"],
+            "label": "fellowship",
             "outcome":"for",
             "question": "Do we need to be worried?"
         },
@@ -56,9 +66,29 @@
             "protagonistReq":["person","group"],
             "antagonistReq":["person","group"],
             "settingReq":["location","event"],
-            "theme": ["fellowship"],
+            "label": "fellowship",
             "outcome":"for",
             "question": "How do you think that will impact the local economy?"
+        },
+        {
+            "text":"maul",
+            "textAddon": "",
+            "protagonistReq":["person","group"],
+            "antagonistReq":["beast"],
+            "settingReq":["location","event"],
+            "label": "violence",
+            "outcome":"against",
+            "question": "What are the odds they will survive?"
+        },
+        {
+            "text":"run",
+            "textAddon": " away from",
+            "protagonistReq":["person","group"],
+            "antagonistReq":["person","group","beast"],
+            "settingReq":["location","event"],
+            "label": "fellowship",
+            "outcome":"against",
+            "question": "What do we do now?"
         }
     ]
 }

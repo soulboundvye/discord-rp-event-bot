@@ -8,6 +8,7 @@
     "discord.io": "^2.5.3",
     "discord.js": "^11.2.1",
     "discord.js-commando": "^0.9.0",
+    "nodemon": "^1.14.7",
     "winston": "^2.4.0"
   },
   "devDependencies": {},

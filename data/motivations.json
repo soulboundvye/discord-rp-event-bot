@@ -2,42 +2,42 @@
 "motivations": [
         {
             "type": "motivation",
-            "label": "violence",
+            "label": ["violence"],
             "text": "a thirst for revenge"
         },
         {
             "type": "motivation",
-            "label": "violence",
+            "label": ["violence"],
             "text": "the war"
         },
         {
             "type": "motivation",
-            "label": "wealth",
+            "label": ["wealth"],
             "text": "a lucrative bounty reward"
         },
         {
             "type": "motivation",
-            "label": "wealth",
+            "label": ["wealth"],
             "text": "a generous spirit"
         },
         {
             "type": "motivation",
-            "label": "fellowship",
+            "label": ["fellowship"],
             "text": "a sense honor and duty"
         },
         {
             "type": "motivation",
-            "label": "fellowship",
+            "label": ["fellowship"],
             "text": "true love"
         },
         {
             "type": "motivation",
-            "label": "power",
+            "label": ["power"],
             "text": "a desire to prove dominance"
         },
         {
             "type": "motivation",
-            "label": "power",
+            "label": ["power"],
             "text": "a dangerous secret"
         }
     ]
