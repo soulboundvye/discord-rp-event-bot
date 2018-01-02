@@ -1,23 +1,27 @@
 {
     "story_templates": [
         {
-            "template":"Intro1",
-            "text": "RICHSETTING1 ANTAGONIST1 CONFLICT1 PROTAGONIST1 because of MOTIVATION1",
+            "name":"Intro1",
+            "label": "intro",
+            "text": "RICHSETTING1 , ANTAGONIST1 CONFLICT1 PROTAGONIST1 because of MOTIVATION1 .",
             "conflictCount": 1
         },
         {
-            "template":"Middle1",
-            "text": "Because of MOTIVATION1 ANTAGONIST1 CONFLICT1 PROTAGONIST1 SETTING1",
-            "conflictCount": 1
-        },
-        {
-            "template":"Intro2",
-            "text": "ANTAGONIST1 CONFLICT1 PROTAGONIST1 RICHSETTING1 and meanwhile PROTAGONIST2 CONFLICT2 ANTAGONIST2 because of MOTIVATION2",
+            "name":"Intro2",
+            "label": "intro",
+            "text": "ANTAGONIST1 CONFLICT1 PROTAGONIST1 RICHSETTING1 . Meanwhile , ANTAGONIST2 CONFLICT2 PROTAGONIST2 because of MOTIVATION2 .",
             "conflictCount": 2
         },
         {
-            "template":"Conclusion1",
-            "text": "ANTAGONIST1 CONFLICT1 PROTAGONIST1 RICHSETTING1",
+            "name":"Middle1",
+            "label": "middle",
+            "text": "Because of MOTIVATION1 , ANTAGONIST2 CONFLICT2 PROTAGONIST1 SETTING2 .",
+            "conflictCount": 1
+        },
+        {
+            "name":"Conclusion1",
+            "label": "ending",
+            "text": "ANTAGONIST1 CONFLICT1 PROTAGONIST1 RICHSETTING1 , all because MOTIVATION1 .",
             "conflictCount": 1
         }
     ]

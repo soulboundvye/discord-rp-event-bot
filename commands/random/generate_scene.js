@@ -39,6 +39,7 @@ function getConflictTemplateString(template,conflict,setting,protagonist,antagon
     CONFLICT = the parameters for a story with a theme, protagonist, antagonist, setting, and action
     */
     var text = template.text;
+    console.log(template.text);
     var conflict1Lead, conflict2Lead;
     if (text.indexOf("PROTAGONIST1") < text.indexOf("ANTAGONIST1")) {
         conflict1Lead = "protagonist1";
@@ -113,13 +114,13 @@ function getConflictTemplateString(template,conflict,setting,protagonist,antagon
     // console.log("Ready to join the string...");
     text = text.join(" ");
     console.log("current string is: " + text);
-    //Add a period
-    text = text.concat(".");
+    text = text.replace(/\s\./g, ".");
+    text = text.replace(/\s\,/g, ",");
 
     text = text.concat(" ", conflict[0].question);
-    if (template.conflictCount == 2) {
+    // if (template.conflictCount == 2) {
         text = text.concat(" ", conflict[1].question);
-    }
+    // }
     console.log(`Final text is: ${text}`);
     return text;
 }
@@ -312,10 +313,10 @@ function getConflicts(protagonists,antagonists,settings) {
     var matchingConflicts = [], filteredConflicts = [], requirements;
     try {
         for (var i = 0; i < 2; i++) {
-            console.log(`Looking for ${protagonists[i].label} protagonist, ${antagonists[i].label} antagonist, and ${settings[i].label} setting`);
+            // console.log(`Looking for ${protagonists[i].label} protagonist, ${antagonists[i].label} antagonist, and ${settings[i].label} setting`);
             requirements = {protagonist: protagonists[i].label, antagonist: antagonists[i].label, setting: settings[i].label};
             filteredConflicts = conflictArray.filter(hasRequiredActors,requirements);
-            console.log(`Number of filtered conflicts: ${filteredConflicts.length}`);
+            // console.log(`Number of filtered conflicts: ${filteredConflicts.length}`);
             matchingConflicts[i] = filteredConflicts[Math.floor(Math.random() * filteredConflicts.length)];
             console.log(`Matching conflicts: ${matchingConflicts[i].text}`);
         }
@@ -333,33 +334,40 @@ function hasRequiredActors(conflict) {
     var result = conflict.protagonistReq.some(hasLabel,this.protagonist) &&
         conflict.antagonistReq.some(hasLabel,this.antagonist) &&
         conflict.settingReq.some(hasLabel,this.setting);
-    console.log(`Conflict ${conflict.text} has matching actors: ${result}`);
+    // console.log(`Conflict ${conflict.text} has matching actors: ${result}`);
     return result;
 
 }
 
 //for use with filter function for motivations
 function hasRequiredTheme(motivation) {
-    console.log(`Checking if ${motivation.text} contains ${this} theme`);
+    // console.log(`Checking if ${motivation.text} contains ${this} theme`);
     var result = motivation.label.some(hasLabel,this);
-    console.log(result);
+    // console.log(result);
+    return result;
+}
+
+function hasRequiredStoryType(story) {
+    // console.log(`Checking story type ${story.label} against ${this}`);
+    var result = (story.label == this);
+    // console.log(result);
     return result;
 }
 
 //for use with filter function
 function hasLabel(labelToCheck) {
-    console.log(`Checking label ${labelToCheck} against ${this}`);
+    // console.log(`Checking label ${labelToCheck} against ${this}`);
     return labelToCheck == this;
 }
 
 //for use with filter function
 function hasLabelInArray(arrayToCheck) {
     var i = 0;
-    console.log(`Checking in ${arrayToCheck.text} for ${this.label}`);
+    // console.log(`Checking in ${arrayToCheck.text} for ${this.label}`);
     // for (i = 0; i < arrayToCheck.length; i++) {
         if (this.label == arrayToCheck.label) return true;
     // }
-    console.log(`Didn't find ${this.label}`);
+    // console.log(`Didn't find ${this.label}`);
     return false;
 }
 
@@ -375,13 +383,37 @@ class GenerateScenarioCommand extends commando.Command {
 
     async run(message, args) {
         args = (args > 1) ? args : 1;
-        // randomly select one or more story template 
+        /* randomly select one or more story template.  If more than 1, should be an intro type
+        and ending type. If 3 or more, all the middle ones should be middle types.
+        */
         var i;
         var selectedStoryTemplate = [];
-        for (i = 0; i < args; i++) {
-            selectedStoryTemplate[i] = storyTemplateArray[Math.floor(Math.random() * storyTemplateArray.length)];
+        try {
+            for (i = 0; i < args; i++) {
+                if (i == 0)
+                {
+                    var introTemplates = storyTemplateArray.filter(hasRequiredStoryType,"intro");
+                    selectedStoryTemplate[i] = introTemplates[Math.floor(Math.random() * introTemplates.length)];
+                    // console.log(`Got an intro template: ${selectedStoryTemplate[i].name}`);
+                }
+                if (i > 0) {
+                    if (i == (args - 1)) {
+                        var endingTemplates = storyTemplateArray.filter(hasRequiredStoryType,"ending");
+                        selectedStoryTemplate[i] = endingTemplates[Math.floor(Math.random() * endingTemplates.length)];
+                        // console.log(`Got an ending template: ${selectedStoryTemplate[i].name}`);
+                    }
+                    else {
+                        var middleTemplates = storyTemplateArray.filter(hasRequiredStoryType,"middle");
+                        selectedStoryTemplate[i] = middleTemplates[Math.floor(Math.random() * middleTemplates.length)];                    
+                        // console.log(`Got a middle template: ${selectedStoryTemplate[i].name}`);
+                    }
+                }
+            }
+            // console.log(`Selected ${selectedStoryTemplate.length} templates`);
+        } catch (e) {
+            console.log(e.stack);
         }
-        //randomly select a couple protagonists and antagonists (there should only be 2 of each per week)
+            //randomly select a couple protagonists and antagonists (there should only be 2 of each per week)
         //randomly get some settings (a couple per week)
         var selectedProtagonist = [];
         var selectedAntagonist = [];
@@ -400,19 +432,31 @@ class GenerateScenarioCommand extends commando.Command {
         //and motivations too (a couple per story template)
 
         var selectedConflicts = [];
-        var selectedMotivation = [], filteredMotivations = [];
+        var selectedMotivation = [], filteredMotivations = [], alreadyUsedMotivations = [];
         for (i = 0; i < args; i++) {
             try {
                 selectedConflicts[i] = getConflicts(selectedProtagonist,selectedAntagonist,selectedSetting);
-                console.log(`Got 2 random conflicts with labels: ${selectedConflicts[i][0].label}, ${selectedConflicts[i][1].label}`);
-                for (var j = 0; j < selectedConflicts.length; j++) {
+                // console.log(`Got 2 random conflicts with labels: ${selectedConflicts[i][0].label}, ${selectedConflicts[i][1].label}`);
+                for (var j = 0; j < selectedConflicts[i].length; j++) {
+                    console.log(`Checking scenario ${i + 1} conflict ${j + 1}: ${selectedConflicts[i][j].text}`);
                     filteredMotivations = motivationArray.filter(hasRequiredTheme,selectedConflicts[i][j].label);
                     console.log(`Number of filtered motivations: ${filteredMotivations.length}`);
-                    selectedMotivation[j] = filteredMotivations[Math.floor(Math.random() * filteredMotivations.length)];
-                    console.log(`Got a random motivation with label: ${selectedMotivation[j].label}`);
+                    //get the index of any already used motivations so they can be removed
+                    for (var k = 0; k < alreadyUsedMotivations.length; k++) {
+                        console.log(`Checking for already used motivations.`);
+                        var index = filteredMotivations.indexOf(alreadyUsedMotivations[k]);
+                        if (index >= 0) {
+                            console.log(`Removing already used motivation: ${alreadyUsedMotivations[k].text}`);
+                            filteredMotivations.splice(index,1);
+                        }
+                    }
+                    console.log(`Number of filtered motivations after removal: ${filteredMotivations.length}`);
+                    selectedMotivation[i] = [filteredMotivations[Math.floor(Math.random() * filteredMotivations.length)],filteredMotivations[Math.floor(Math.random() * filteredMotivations.length)]];
+                    alreadyUsedMotivations.push(selectedMotivation[i][0],selectedMotivation[i][1]);
+                    console.log(`Got motivations: ${selectedMotivation[i][0].text} and ${selectedMotivation[i][1].text}`);
                 }
-                } catch (e) {
-                    console.log(e);
+            } catch (e) {
+                console.log(e);
             }
         }
 
@@ -434,7 +478,7 @@ class GenerateScenarioCommand extends commando.Command {
         var sceneText = [];
         for (i = 0; i < args; i++) {
             try {
-                sceneText[i] = getConflictTemplateString(selectedStoryTemplate[i],selectedConflicts[i],selectedSetting,selectedProtagonist,selectedAntagonist,selectedMotivation);
+                sceneText[i] = getConflictTemplateString(selectedStoryTemplate[i],selectedConflicts[i],selectedSetting,selectedProtagonist,selectedAntagonist,selectedMotivation[i]);
                 sceneText[i] = sceneText[i].charAt(0).toUpperCase() + sceneText[i].slice(1);
                 message.channel.send(sceneText[i]);
             } catch (e) {
@@ -442,7 +486,5 @@ class GenerateScenarioCommand extends commando.Command {
             }            
         }
     }
-
-
 }
 module.exports = GenerateScenarioCommand;
