@@ -3,82 +3,82 @@
         {
             "type": "motivation",
             "label": ["violence"],
-            "text": "a thirst for revenge"
+            "text": "because of a thirst for revenge"
         },
         {
             "type": "motivation",
             "label": ["violence","fellowship","power"],
-            "text": "the war"
+            "text": "on account of the war"
         },
         {
             "type": "motivation",
             "label": ["wealth"],
-            "text": "a lucrative bounty reward"
+            "text": "while pursuing a lucrative bounty reward"
         },
         {
             "type": "motivation",
             "label": ["wealth","fellowship"],
-            "text": "a generous spirit"
+            "text": "because of a generous spirit"
         },
         {
             "type": "motivation",
             "label": ["fellowship","violence"],
-            "text": "a sense honor and duty"
+            "text": "to uphold a sense honor and duty"
         },
         {
             "type": "motivation",
             "label": ["fellowship","wealth"],
-            "text": "true love"
+            "text": "for true love"
         },
         {
             "type": "motivation",
             "label": ["power","wealth","violence","fellowship"],
-            "text": "a desire to prove dominance"
+            "text": "to satisfy a desire to prove dominance"
         },
         {
             "type": "motivation",
             "label": ["power","fellowship","violence","wealth"],
-            "text": "a dangerous secret"
+            "text": "to keep a dangerous secret"
         },
         {
             "type": "motivation",
             "label": ["violence"],
-            "text": "a deep, burning hatred"
+            "text": "because of a deep, burning hatred"
         },
         {
             "type": "motivation",
             "label": ["violence","fellowship","power"],
-            "text": "a secretive cult belief"
+            "text": "due to a secretive cult belief"
         },
         {
             "type": "motivation",
             "label": ["wealth"],
-            "text": "a debt"
+            "text": "to pay back a debt"
         },
         {
             "type": "motivation",
             "label": ["wealth","fellowship"],
-            "text": "a bet"
+            "text": "for a bet"
         },
         {
             "type": "motivation",
             "label": ["fellowship","violence"],
-            "text": "a rebellion that is gaining acceptance"
+            "text": "to help the growing rebellion"
         },
         {
             "type": "motivation",
             "label": ["fellowship","wealth"],
-            "text": "a reputation to uphold"
+            "text": "to uphold a reputation"
         },
         {
             "type": "motivation",
             "label": ["power","wealth","violence","fellowship"],
-            "text": "a distrust of outsiders"
+            "text": "due to a distrust of outsiders"
         },
         {
             "type": "motivation",
             "label": ["power","fellowship","violence","wealth"],
-            "text": "a strange book"
+            "text": "because of a strange book"
         }
     ]
 }

@@ -41,6 +41,7 @@ function getConflictTemplateString(template,conflict,setting,protagonist,antagon
     var text = template.text;
     console.log(template.text);
     var conflict1Lead, conflict2Lead;
+    //TODO: this needs some reworking since everything is all interchangeable now...
     if (text.indexOf("PROTAGONIST1") < text.indexOf("ANTAGONIST1")) {
         conflict1Lead = "protagonist1";
     }
@@ -117,6 +118,7 @@ function getConflictTemplateString(template,conflict,setting,protagonist,antagon
     text = text.replace(/\s\./g, ".");
     text = text.replace(/\s\,/g, ",");
 
+    //TODO: This needs some rethinking. It's not flowing well.
     text = text.concat(" ", conflict[0].question);
     // if (template.conflictCount == 2) {
         text = text.concat(" ", conflict[1].question);
@@ -125,6 +127,7 @@ function getConflictTemplateString(template,conflict,setting,protagonist,antagon
     return text;
 }
 
+//Returns randomly selected conflicts of the given type
 function getRandomConflictRequirement(count,conflicts,type) {
     // console.log("Entered getRandomConflictRequirement function");
     var object = [];
@@ -306,6 +309,7 @@ function getUniqueStoryObjects(index,object,type,label) {
     // console.log("Got " + object.length + " unique story objects of type " + type);
 }
 
+//Returns conflicts that match the criteria in the story objects
 function getConflicts(protagonists,antagonists,settings) {
     //the arguments passed in are from an array 
     //need to find a conflict that meet the requirements (eventually should be unique)
@@ -325,6 +329,35 @@ function getConflicts(protagonists,antagonists,settings) {
     }
 
     return matchingConflicts;
+}
+
+//Returns motivations that match the criteria in the conflict and haven't been used yet
+function getMotivations(conflicts,usedMotivations) {
+    var matchingMotivations = [], filteredMotivations = [];
+    try {
+        for (var i = 0; i < conflicts.length; i++) {
+            console.log(`Getting motivations for ${conflicts[i].text}`);
+            filteredMotivations = motivationArray.filter(hasRequiredTheme,conflicts[i].label);
+            console.log(`Number of filtered motivations: ${filteredMotivations.length}`);
+            //get the index of any already used motivations so they can be removed
+            for (var j = 0; j < usedMotivations.length; j++) {
+                console.log(`Checking for already used motivations.`);
+                var index = filteredMotivations.indexOf(usedMotivations[j]);
+                if (index >= 0) {
+                    console.log(`Removing already used motivation: ${usedMotivations[j].text}`);
+                    filteredMotivations.splice(index,1);
+                }
+            }
+            // console.log(`Number of filtered motivations after removal: ${filteredMotivations.length}`);
+            matchingMotivations[i] = filteredMotivations[Math.floor(Math.random() * filteredMotivations.length)];
+            usedMotivations.push(matchingMotivations[i]);
+            console.log(`Got motivation ${matchingMotivations[i].text} for conflict ${conflicts[i].text}`);
+            console.log(`Already used ${usedMotivations.length} motivations.`);
+        }
+    } catch (e) {
+        console.log(e);
+    }
+    return matchingMotivations; 
 }
 
 //for use with filter function for conflicts
@@ -347,6 +380,7 @@ function hasRequiredTheme(motivation) {
     return result;
 }
 
+//for use with filter function for story templates
 function hasRequiredStoryType(story) {
     // console.log(`Checking story type ${story.label} against ${this}`);
     var result = (story.label == this);
@@ -413,7 +447,7 @@ class GenerateScenarioCommand extends commando.Command {
         } catch (e) {
             console.log(e.stack);
         }
-            //randomly select a couple protagonists and antagonists (there should only be 2 of each per week)
+        //randomly select a couple protagonists and antagonists (there should only be 2 of each per week)
         //randomly get some settings (a couple per week)
         var selectedProtagonist = [];
         var selectedAntagonist = [];
@@ -428,33 +462,22 @@ class GenerateScenarioCommand extends commando.Command {
             }
         }
         console.log("Got the actors. Now on to the conflict and motivation.");
-        //use their types to select some conflicts they work in (there should be a new one for each story template)
-        //and motivations too (a couple per story template)
 
+        //use their types to select some conflicts they work in (there should be a new one for each story template)
         var selectedConflicts = [];
-        var selectedMotivation = [], filteredMotivations = [], alreadyUsedMotivations = [];
+        var selectedMotivation = [], alreadyUsedMotivations = [];
         for (i = 0; i < args; i++) {
             try {
                 selectedConflicts[i] = getConflicts(selectedProtagonist,selectedAntagonist,selectedSetting);
                 // console.log(`Got 2 random conflicts with labels: ${selectedConflicts[i][0].label}, ${selectedConflicts[i][1].label}`);
-                for (var j = 0; j < selectedConflicts[i].length; j++) {
-                    console.log(`Checking scenario ${i + 1} conflict ${j + 1}: ${selectedConflicts[i][j].text}`);
-                    filteredMotivations = motivationArray.filter(hasRequiredTheme,selectedConflicts[i][j].label);
-                    console.log(`Number of filtered motivations: ${filteredMotivations.length}`);
-                    //get the index of any already used motivations so they can be removed
-                    for (var k = 0; k < alreadyUsedMotivations.length; k++) {
-                        console.log(`Checking for already used motivations.`);
-                        var index = filteredMotivations.indexOf(alreadyUsedMotivations[k]);
-                        if (index >= 0) {
-                            console.log(`Removing already used motivation: ${alreadyUsedMotivations[k].text}`);
-                            filteredMotivations.splice(index,1);
-                        }
-                    }
-                    console.log(`Number of filtered motivations after removal: ${filteredMotivations.length}`);
-                    selectedMotivation[i] = [filteredMotivations[Math.floor(Math.random() * filteredMotivations.length)],filteredMotivations[Math.floor(Math.random() * filteredMotivations.length)]];
-                    alreadyUsedMotivations.push(selectedMotivation[i][0],selectedMotivation[i][1]);
-                    console.log(`Got motivations: ${selectedMotivation[i][0].text} and ${selectedMotivation[i][1].text}`);
-                }
+            } catch (e) {
+                console.log(e);
+            }
+        }
+        //and motivations too (a couple per story template)
+        for (i = 0; i < args; i++) {
+            try {
+                selectedMotivation[i] = getMotivations(selectedConflicts[i],alreadyUsedMotivations);
             } catch (e) {
                 console.log(e);
             }
