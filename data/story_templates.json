@@ -3,32 +3,32 @@
         {
             "name":"Intro1",
             "label": "intro",
-            "text": "RICHSETTING1 , ANTAGONIST1 CONFLICT1 PROTAGONIST1 MOTIVATION1 .",
-            "conflictCount": 1
+            "text": "RICHSETTING1 , ANTAGONIST1 CONFLICT1 PROTAGONIST1 MOTIVATION1 ."
         },
         {
             "name":"Intro2",
             "label": "intro",
-            "text": "ANTAGONIST1 CONFLICT1 PROTAGONIST1 RICHSETTING1 . Meanwhile , ANTAGONIST2 CONFLICT2 PROTAGONIST2 MOTIVATION2 .",
-            "conflictCount": 2
+            "text": "ANTAGONIST1 CONFLICT1 PROTAGONIST1 RICHSETTING1 . Meanwhile , ANTAGONIST2 CONFLICT2 PROTAGONIST2 MOTIVATION2 ."
         },
         {
             "name":"Middle1",
             "label": "middle",
-            "text": "MOTIVATION1 , ANTAGONIST2 CONFLICT2 PROTAGONIST1 SETTING2 .",
-            "conflictCount": 1
+            "text": "MOTIVATION1 , ANTAGONIST2 CONFLICT2 PROTAGONIST2 SETTING2 ."
         },
         {
             "name":"Middle2",
             "label": "middle",
-            "text": "Later, it is learned that ANTAGONIST1 CONFLICT1 PROTAGONIST1 RICHSETTING2 , leaving PROTAGONIST2 to CONFLICT2 ANTAGONIST2 MOTIVATION2 .",
-            "conflictCount": 2
+            "text": "Later, it is learned that ANTAGONIST1 CONFLICT1 PROTAGONIST1 RICHSETTING2 , and ANTAGONIST2 CONFLICT2 PROTAGONIST2 MOTIVATION2 ."
+        },
+        {
+            "name":"Middle3",
+            "label": "middle",
+            "text": "ANTAGONIST1 CONFLICT1 PROTAGONIST1 RICHSETTING1 but this isn't the first time that's happened."
         },
         {
             "name":"Conclusion1",
             "label": "ending",
-            "text": "ANTAGONIST1 CONFLICT1 PROTAGONIST1 RICHSETTING1 , all MOTIVATION1 .",
-            "conflictCount": 1
+            "text": "ANTAGONIST1 CONFLICT1 PROTAGONIST1 RICHSETTING1 , all MOTIVATION1 ."
         }
     ]
 }

@@ -89,6 +89,106 @@
             "label": "fellowship",
             "outcome":"against",
             "question": "What do we do now?"
+        },
+        {
+            "text":"return",
+            "textAddon": " after a long absence to",
+            "protagonistReq":["person","group","nature"],
+            "antagonistReq":["person","group","beast"],
+            "settingReq":["location","event"],
+            "label": "fellowship",
+            "outcome":"for",
+            "question": ""
+        },
+        {
+            "text":"argue",
+            "textAddon": " with",
+            "protagonistReq":["person","group","nature"],
+            "antagonistReq":["person","group"],
+            "settingReq":["location","event"],
+            "label": "power",
+            "outcome":"against",
+            "question": ""
+        },
+        {
+            "text":"beg",
+            "textAddon": " for succor from",
+            "protagonistReq":["person","group"],
+            "antagonistReq":["person","group","beast"],
+            "settingReq":["location","event"],
+            "label": "fellowship",
+            "outcome":"for",
+            "question": ""
+        },
+        {
+            "text":"entertain",
+            "textAddon": "",
+            "protagonistReq":["person","group"],
+            "antagonistReq":["person","group","beast"],
+            "settingReq":["location","event"],
+            "label": "fellowship",
+            "outcome":"for",
+            "question": ""
+        },
+        {
+            "text":"chase",
+            "textAddon": "",
+            "protagonistReq":["person","group","nature"],
+            "antagonistReq":["person","group","beast"],
+            "settingReq":["location","event"],
+            "label": "violence",
+            "outcome":"against",
+            "question": ""
+        },
+        {
+            "text":"trade",
+            "textAddon": " with",
+            "protagonistReq":["person","group","nature"],
+            "antagonistReq":["person","group"],
+            "settingReq":["location","event"],
+            "label": "wealth",
+            "outcome":"for",
+            "question": ""
+        },
+        {
+            "text":"hunt",
+            "textAddon": " game for",
+            "protagonistReq":["person","group"],
+            "antagonistReq":["person","group","beast"],
+            "settingReq":["location","event"],
+            "label": "violence",
+            "outcome":"for",
+            "question": ""
+        },
+        {
+            "text":"provide",
+            "textAddon": " medicine to",
+            "protagonistReq":["person","group"],
+            "antagonistReq":["person","group"],
+            "settingReq":["location","event"],
+            "label": "fellowship",
+            "outcome":"for",
+            "question": ""
+        },
+        {
+            "text":"fall",
+            "textAddon": " to the ground before",
+            "protagonistReq":["person","group","nature"],
+            "antagonistReq":["person","group","beast"],
+            "settingReq":["location","event"],
+            "label": "power",
+            "outcome":"for",
+            "question": ""
+        },
+        {
+            "text":"humiliate",
+            "textAddon": "",
+            "protagonistReq":["person","group"],
+            "antagonistReq":["person","group"],
+            "settingReq":["location","event"],
+            "label": "fellowship",
+            "outcome":"against",
+            "question": ""
         }
     ]
 }

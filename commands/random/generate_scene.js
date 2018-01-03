@@ -41,21 +41,27 @@ function getConflictTemplateString(template,conflict,setting,protagonist,antagon
     var text = template.text;
     console.log(template.text);
     var conflict1Lead, conflict2Lead;
-    //TODO: this needs some reworking since everything is all interchangeable now...
-    if (text.indexOf("PROTAGONIST1") < text.indexOf("ANTAGONIST1")) {
-        conflict1Lead = "protagonist1";
-    }
-    else {
-        conflict1Lead = "antagonist1";
-    }
-    if (text.indexOf("PROTAGONIST2") < text.indexOf("ANTAGONIST2")) {
-        conflict2Lead = "protagonist2";
-    }
-    else {
-        conflict2Lead = "antagonist2";
-    }
 
     text = template.text.split(" ");
+
+    var con1Pos = text.indexOf("CONFLICT1"),
+    con2Pos = text.indexOf("CONFLICT2");
+
+    // console.log(text[con1Pos-1] + " " + text[con2Pos-1]);
+
+
+    if (text[con1Pos-1] == "PROTAGONIST1") { conflict1Lead = "protagonist1"; }
+    if (text[con1Pos-1] == "PROTAGONIST2") { conflict1Lead = "protagonist2"; }
+    if (text[con1Pos-1] == "ANTAGONIST1") { conflict1Lead = "antagonist1"; }
+    if (text[con1Pos-1] == "ANTAGONIST2") { conflict1Lead = "antagonist2"; }
+
+    if (text[con2Pos-1] == "PROTAGONIST1") { conflict2Lead = "protagonist1"; }
+    if (text[con2Pos-1] == "PROTAGONIST2") { conflict2Lead = "protagonist2"; }
+    if (text[con2Pos-1] == "ANTAGONIST1") { conflict2Lead = "antagonist1"; }
+    if (text[con2Pos-1] == "ANTAGONIST2") { conflict2Lead = "antagonist2"; }
+
+    console.log(conflict1Lead, conflict2Lead);
+
 
     var i;
     for (i = 0; i < text.length; i++) {
@@ -63,21 +69,33 @@ function getConflictTemplateString(template,conflict,setting,protagonist,antagon
             default:
                 break;
             case "CONFLICT1":
-                if (conflict1Lead == "protagonist") {
+                if (conflict1Lead == "protagonist1") {
                     text[i] = conflict[0].text + protagonist[0].verbConjugation + conflict[0].textAddon;
                 }
-                else {
+                if (conflict1Lead == "protagonist2") {
+                    text[i] = conflict[0].text + protagonist[1].verbConjugation + conflict[0].textAddon;
+                }
+                if (conflict1Lead == "antagonist1") {
                     text[i] = conflict[0].text + antagonist[0].verbConjugation + conflict[0].textAddon;
+                }
+                if (conflict1Lead == "antagonist2") {
+                    text[i] = conflict[0].text + antagonist[1].verbConjugation + conflict[0].textAddon;
                 }
                 break;
             case "CONFLICT2":
-                if (conflict2Lead == "protagonist") {
+                if (conflict2Lead == "protagonist1") {
+                    text[i] = conflict[1].text + protagonist[0].verbConjugation + conflict[1].textAddon;
+                }
+                if (conflict2Lead == "protagonist2") {
                     text[i] = conflict[1].text + protagonist[1].verbConjugation + conflict[1].textAddon;
                 }
-                else {
+                if (conflict2Lead == "antagonist1") {
+                    text[i] = conflict[1].text + antagonist[0].verbConjugation + conflict[1].textAddon;
+                }
+                if (conflict2Lead == "antagonist2") {
                     text[i] = conflict[1].text + antagonist[1].verbConjugation + conflict[1].textAddon;
                 }
-                break;
+            break;
             case "PROTAGONIST1":
                 text[i] = protagonist[0].text;
                 break;
@@ -114,14 +132,13 @@ function getConflictTemplateString(template,conflict,setting,protagonist,antagon
 
     // console.log("Ready to join the string...");
     text = text.join(" ");
-    console.log("current string is: " + text);
+    // console.log("current string is: " + text);
     text = text.replace(/\s\./g, ".");
     text = text.replace(/\s\,/g, ",");
 
     //TODO: This needs some rethinking. It's not flowing well.
-    text = text.concat(" ", conflict[0].question);
-    // if (template.conflictCount == 2) {
-        text = text.concat(" ", conflict[1].question);
+    // text = text.concat(" ", conflict[0].question);
+    // text = text.concat(" ", conflict[1].question);
     // }
     console.log(`Final text is: ${text}`);
     return text;
@@ -310,7 +327,7 @@ function getUniqueStoryObjects(index,object,type,label) {
 }
 
 //Returns conflicts that match the criteria in the story objects
-function getConflicts(protagonists,antagonists,settings) {
+function getConflicts(protagonists,antagonists,settings,usedConflicts) {
     //the arguments passed in are from an array 
     //need to find a conflict that meet the requirements (eventually should be unique)
     //this function will be called for each scene which could have 2 conflicts, so must return 2 conflicts
@@ -321,8 +338,20 @@ function getConflicts(protagonists,antagonists,settings) {
             requirements = {protagonist: protagonists[i].label, antagonist: antagonists[i].label, setting: settings[i].label};
             filteredConflicts = conflictArray.filter(hasRequiredActors,requirements);
             // console.log(`Number of filtered conflicts: ${filteredConflicts.length}`);
+            //get the index of any already used conflicts so they can be removed
+            for (var j = 0; j < usedConflicts.length; j++) {
+                console.log(`Checking for already used conflict.`);
+                var index = filteredConflicts.indexOf(usedConflicts[j]);
+                if (index >= 0) {
+                    console.log(`Removing already used conflict: ${usedConflicts[j].text}`);
+                    filteredConflicts.splice(index,1);
+                }
+            }
+            console.log(`Number of filtered conflicts after removal: ${filteredConflicts.length}`);
             matchingConflicts[i] = filteredConflicts[Math.floor(Math.random() * filteredConflicts.length)];
+            usedConflicts.push(matchingConflicts[i]);
             console.log(`Matching conflicts: ${matchingConflicts[i].text}`);
+            console.log(`Already used ${usedConflicts.length} conflicts.`);
         }
     } catch (e) {
         console.log(e);
@@ -336,23 +365,23 @@ function getMotivations(conflicts,usedMotivations) {
     var matchingMotivations = [], filteredMotivations = [];
     try {
         for (var i = 0; i < conflicts.length; i++) {
-            console.log(`Getting motivations for ${conflicts[i].text}`);
+            // console.log(`Getting motivations for ${conflicts[i].text}`);
             filteredMotivations = motivationArray.filter(hasRequiredTheme,conflicts[i].label);
-            console.log(`Number of filtered motivations: ${filteredMotivations.length}`);
+            // console.log(`Number of filtered motivations: ${filteredMotivations.length}`);
             //get the index of any already used motivations so they can be removed
             for (var j = 0; j < usedMotivations.length; j++) {
-                console.log(`Checking for already used motivations.`);
+                // console.log(`Checking for already used motivations.`);
                 var index = filteredMotivations.indexOf(usedMotivations[j]);
                 if (index >= 0) {
-                    console.log(`Removing already used motivation: ${usedMotivations[j].text}`);
+                    // console.log(`Removing already used motivation: ${usedMotivations[j].text}`);
                     filteredMotivations.splice(index,1);
                 }
             }
             // console.log(`Number of filtered motivations after removal: ${filteredMotivations.length}`);
             matchingMotivations[i] = filteredMotivations[Math.floor(Math.random() * filteredMotivations.length)];
             usedMotivations.push(matchingMotivations[i]);
-            console.log(`Got motivation ${matchingMotivations[i].text} for conflict ${conflicts[i].text}`);
-            console.log(`Already used ${usedMotivations.length} motivations.`);
+            // console.log(`Got motivation ${matchingMotivations[i].text} for conflict ${conflicts[i].text}`);
+            // console.log(`Already used ${usedMotivations.length} motivations.`);
         }
     } catch (e) {
         console.log(e);
@@ -465,10 +494,10 @@ class GenerateScenarioCommand extends commando.Command {
 
         //use their types to select some conflicts they work in (there should be a new one for each story template)
         var selectedConflicts = [];
-        var selectedMotivation = [], alreadyUsedMotivations = [];
+        var selectedMotivation = [], alreadyUsedConflicts = [], alreadyUsedMotivations = [];
         for (i = 0; i < args; i++) {
             try {
-                selectedConflicts[i] = getConflicts(selectedProtagonist,selectedAntagonist,selectedSetting);
+                selectedConflicts[i] = getConflicts(selectedProtagonist,selectedAntagonist,selectedSetting,alreadyUsedConflicts);
                 // console.log(`Got 2 random conflicts with labels: ${selectedConflicts[i][0].label}, ${selectedConflicts[i][1].label}`);
             } catch (e) {
                 console.log(e);
