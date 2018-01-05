@@ -3,8 +3,8 @@
         {
             "text":"duel",
             "textAddon": "",
-            "protagonistReq":["person","group"],
-            "antagonistReq":["person","group"],
+            "protagonistReq":["person"],
+            "antagonistReq":["person"],
             "settingReq":["location","event"],
             "label": "violence",
             "outcome": "against",

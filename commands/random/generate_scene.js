@@ -144,186 +144,52 @@ function getConflictTemplateString(template,conflict,setting,protagonist,antagon
     return text;
 }
 
-//Returns randomly selected conflicts of the given type
-function getRandomConflictRequirement(count,conflicts,type) {
-    // console.log("Entered getRandomConflictRequirement function");
-    var object = [];
-
-    var i = 0;
-
-    switch (type) {
-        default:
-            object = "No conflict requirement found.";
-            break;
-        case "antagonist":
-            for (i = 0; i < count; i++) {
-                // console.log("in the for loop to randomly choose an antagonist from conflict " + i + "'s options");
-                if(conflicts.antagonistReq.length > 1) {
-                    // console.log("there is more than one option, so we're randomly selecting it");
-                    object[i] = conflicts.antagonistReq[Math.floor(Math.random() * conflicts.antagonistReq.length)];
-                }
-                else {
-                    // console.log("there is not more than one option, so just setting the value to " + conflicts[i].antagonistReq[0]);
-                    object[i] = conflicts.antagonistReq[0];                    
-                }
-                // console.log("the antagonist chosen is " + object[i]);
-            }
-            break;
-        case "protagonist":
-            for (i = 0; i < count; i++) {
-                // console.log("in the for loop to randomly choose a protagonist from conflict " + i + "'s options");
-                if(conflicts.protagonistReq.length > 1) {
-                    // console.log("there is more than one option, so we're randomly selecting it");
-                    object[i] = conflicts.protagonistReq[Math.floor(Math.random() * conflicts.protagonistReq.length)];
-                }
-                else {
-                    // console.log("there is not more than one option, so just setting the value to " + conflicts[i].protagonistReq[0]);
-                    object[i] = conflicts.protagonistReq[0];                    
-                }
-                // console.log("the protagonist chosen is " + object[i]);
-            }
-            break;
-        case "setting":
-            for (i = 0; i < count; i++) {
-                // console.log("in the for loop to randomly choose a setting from conflict " + i + "'s options");
-                if(conflicts.settingReq.length > 1) {
-                    // console.log("there is more than one option, so we're randomly selecting it");
-                    object[i] = conflicts.settingReq[Math.floor(Math.random() * conflicts.settingReq.length)];
-                }
-                else {
-                    // console.log("there is not more than one option, so just setting the value to " + conflicts[i].settingReq[0]);
-                    object[i] = conflicts.settingReq[0];                    
-                }
-                // console.log("the setting chosen is " + object[i]);
-            }
-            break;
-        case "motivation":
-            for (i = 0; i < count; i++) {
-                // console.log("in the for loop to randomly choose a motivation from conflict " + i + "'s options");
-                // if(conflicts.label.length > 1) {
-                //     // console.log("there is more than one option, so we're randomly selecting it");
-                //     object[i] = conflicts.label[Math.floor(Math.random() * conflicts.label.length)];
-                // }
-                // else {
-                    // console.log("there is not more than one option, so just setting the value to " + conflicts[i].label[0]);
-                    object[i] = conflicts.label;
-                // }
-                // console.log("the motivation chosen is " + object[i]);
-            }
-            break;
-        }
-    return object;
-}
-
-// Returns a randomly selected object of that type, filtered by label
-function getRandomStoryObject(type,label) {
+// Returns a randomly selected object of that type
+function getRandomStoryObject(type) {
     // console.log("In the getRandomStoryObject function");
     var object = "Didn't enter switch";
 
     switch (type) {
+        case "protagonist":
+                object = protagonistArray[Math.floor(Math.random() * protagonistArray.length)];
+            break;
+        case "antagonist":
+                object = antagonistArray[Math.floor(Math.random() * antagonistArray.length)];
+            break;
+        case "setting":
+                object = settingArray[Math.floor(Math.random() * settingArray.length)];
+            break;
         default:
             object = "No Story Object Found."
             break;
-        case "antagonist":
-            do {
-                object = antagonistArray[Math.floor(Math.random() * antagonistArray.length)];
-            }
-            while (object.label != label);
-            break;
-        case "protagonist":
-            do {
-                object = protagonistArray[Math.floor(Math.random() * protagonistArray.length)];
-            }
-            while (object.label != label)
-            break;
-        case "setting":
-            do {
-                object = settingArray[Math.floor(Math.random() * settingArray.length)];
-            }
-            while (object.label != label)
-            break;
-        case "motivation":
-            do {
-                object = motivationArray[Math.floor(Math.random() * motivationArray.length)];
-            }
-            while (object.label != label)
-            break;
-        case "conflict":
-            do {
-                object = conflictArray[Math.floor(Math.random() * conflictArray.length)];
-            }
-            while (object.outcome != label)
-            break;
     }
-    console.log("Completed getRandomStoryObject of type: " + type + " and label " + label);
+    console.log("Completed getRandomStoryObject of type: " + type);
     return object;
 }
 
-//For a given template, get all the necessary story objects
-function getAllObjects(count,conflicts,protagonists,antagonists,settings,motivations) {
-   
-    // console.log("Entered getAllObjects function");
+//Returns random and unique story objects based on the required type
 
-    //select which labels will be used for the conflict, if there are choices
-    var chosenProtagonists = [];
-    var chosenAntagonists = [];
-    var chosenSettings = [];
-    var chosenMotivations = [];
+function getUniqueStoryObjects(count,type) {
+    var selectedObjects = [];
 
-    //for each conflict, go get the necessary stuffs
-    var i = 0;
-    for (i = 0; i < count; i++) {
-        //randomize whether the conflict is for or against the protagonist
-        var conflictType = Math.ceil(Math.random() * 2);
-        if (conflictType == 1) {
-            conflictType = "against";
+    try {
+        //TODO: Need to make unique and random
+        for (var i = 0; i < count; i++) { 
+            if (i == 0) {
+                selectedObjects[i] = getRandomStoryObject(type);        
+            }
+            if (i > 0) {
+                do {
+                    selectedObjects[i] = getRandomStoryObject(type);
+                }
+                while (selectedObjects[i].text == selectedObjects[i - 1].text)
+            } 
+            // console.log("Got " + object.length + " unique story objects of type " + type);        
         }
-        else {
-            conflictType = "for";
-        }
-
-        getUniqueStoryObjects(i,conflicts,"conflict",conflictType);
-        console.log("Conflict " + (i+1) + " is: " + conflicts[i].text);
-
-        console.log("Choosing story object labels from conflict" + (i + 1) + "'s options");
-        chosenProtagonists[i] = getRandomConflictRequirement(1,conflicts[i],"protagonist");
-        console.log("Got the protagonist label: " + chosenProtagonists);
-        chosenAntagonists[i] = getRandomConflictRequirement(1,conflicts[i],"antagonist");
-        console.log("Got the antagonist label: " + chosenAntagonists);
-        chosenSettings[i] = getRandomConflictRequirement(1,conflicts[i],"setting");
-        console.log("Got the setting label: " + chosenSettings);
-        chosenMotivations[i] = getRandomConflictRequirement(1,conflicts[i],"motivation");
-        console.log("Got the motivation label: " + chosenMotivations);
-    
-        getUniqueStoryObjects(i,protagonists,"protagonist",chosenProtagonists[i]);
-        console.log("got another unique protagonist for conflict " + (i+1));
-        getUniqueStoryObjects(i,antagonists,"antagonist",chosenAntagonists[i]);
-        console.log("got another unique antagonist for conflict " + (i+1));
-        getUniqueStoryObjects(i,settings,"setting",chosenSettings[i]);
-        console.log("got another unique setting for conflict " + (i+1));
-        getUniqueStoryObjects(i,motivations,"motivation",chosenMotivations[i]);
-        console.log("got another unique motivation for conflict " + (i+1));
-
+    } catch (e) {
+        console.log(e);
     }
-    
-    // console.log("Exiting getAllObjectsForStoryTemplate function");
-    return null;
-}
-
-//Add random and unique story objects to an array based on the required type and label from the conflict
-function getUniqueStoryObjects(index,object,type,label) {
-    console.log("Entered the getUniqueStoryObjects function with index " + index + " type " + type + " and label " + label);
-    if (index == 0) {
-        object[index] = getRandomStoryObject(type,label);        
-    }
-    if (index > 0) {
-        do {
-            object[index] = getRandomStoryObject(type,label);
-        }
-        while (object[index].text == object[index - 1].text)
-    }
- 
-    // console.log("Got " + object.length + " unique story objects of type " + type);
+    return selectedObjects;
 }
 
 //Returns conflicts that match the criteria in the story objects
@@ -466,6 +332,7 @@ class GenerateScenarioCommand extends commando.Command {
                         // console.log(`Got an ending template: ${selectedStoryTemplate[i].name}`);
                     }
                     else {
+                        //TODO: Middle templates shouldn't repeat 
                         var middleTemplates = storyTemplateArray.filter(hasRequiredStoryType,"middle");
                         selectedStoryTemplate[i] = middleTemplates[Math.floor(Math.random() * middleTemplates.length)];                    
                         // console.log(`Got a middle template: ${selectedStoryTemplate[i].name}`);
@@ -478,18 +345,9 @@ class GenerateScenarioCommand extends commando.Command {
         }
         //randomly select a couple protagonists and antagonists (there should only be 2 of each per week)
         //randomly get some settings (a couple per week)
-        var selectedProtagonist = [];
-        var selectedAntagonist = [];
-        var selectedSetting = [];
-        for (i = 0; i < 2; i++) {
-            try {
-                selectedProtagonist[i] = protagonistArray[Math.floor(Math.random() * protagonistArray.length)];
-                selectedAntagonist[i] = antagonistArray[Math.floor(Math.random() * antagonistArray.length)];
-                selectedSetting[i] = settingArray[Math.floor(Math.random() * settingArray.length)];
-            } catch (e) {
-                console.log(e);
-            }
-        }
+        var selectedProtagonist = getUniqueStoryObjects(2,"protagonist");
+        var selectedAntagonist = getUniqueStoryObjects(2,"antagonist");
+        var selectedSetting = getUniqueStoryObjects(2,"setting");
         console.log("Got the actors. Now on to the conflict and motivation.");
 
         //use their types to select some conflicts they work in (there should be a new one for each story template)
